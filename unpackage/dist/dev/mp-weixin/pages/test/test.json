@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "智慧迎新",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "cc-notice-bar": "/uni_modules/cc-noticeBar/components/cc-noticeBar/cc-noticeBar",
+    "page-image": "/components/PageImage/PageImage",
+    "uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
+  }
+}

@@ -1,0 +1,1 @@
+<view><q-turntable class="vue-ref" bind:start="__e" bind:success="__e" vue-id="43aed6c4-1" data-ref="turntable" data-event-opts="{{[['^start',[['turntableStart']]],['^success',[['turntableSuccess']]]]}}" bind:__l="__l"></q-turntable></view>

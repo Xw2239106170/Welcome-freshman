@@ -1,0 +1,19 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "major": "/components/Major/Major",
+    "present": "/components/Present/Present",
+    "tutition": "/components/Tutition/Tutition",
+    "identify-face": "/components/IdentifyFace/IdentifyFace",
+    "get-test": "/components/GetTest/GetTest",
+    "dormitory": "/components/Dormitory/Dormitory",
+    "myclub": "/components/Myclub/Myclub",
+    "my-road": "/components/myRoad/myRoad",
+    "individual": "/components/Individual/Individual",
+    "my-info": "/components/MyInfo/MyInfo",
+    "welcome-dot": "/components/WelcomeDot/WelcomeDot",
+    "my-forecast": "/components/MyForecast/MyForecast",
+    "my-setting": "/components/MySetting/MySetting"
+  }
+}

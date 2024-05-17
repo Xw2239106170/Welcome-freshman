@@ -1,0 +1,49 @@
+
+.club-list.data-v-0537ef04 {
+  padding: 20rpx;
+  background: linear-gradient(to bottom, #6cc4cb, white);
+}
+.club-item.data-v-0537ef04 {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding: 20rpx;
+  background-color: #f5f5f5;
+  border-radius: 10rpx;
+}
+.club-logo.data-v-0537ef04 {
+  width: 100rpx;
+  height: 100rpx;
+  /* border-radius: 50%; */
+  margin-right: 20rpx;
+}
+.club-details.data-v-0537ef04 {
+  flex: 1;
+}
+.club-name.data-v-0537ef04 {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+.club-description.data-v-0537ef04 {
+  font-size: 28rpx;
+  color: #666;
+}
+
+/* 空空如也 */
+.empty-cart.data-v-0537ef04 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 150px;
+}
+.empty-cart .empty-img.data-v-0537ef04 {
+  width: 90px;
+  height: 90px;
+}
+.empty-cart .tip-text.data-v-0537ef04 {
+  font-size: 12px;
+  color: gray;
+  margin-top: 15px;
+}
+

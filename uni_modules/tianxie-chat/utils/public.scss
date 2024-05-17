@@ -1,0 +1,12 @@
+.text_omit_2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.container{
+	font-size: $uni-font-size-base;
+	height: 100vh;
+	overflow: hidden;
+}

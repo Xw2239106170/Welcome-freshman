@@ -1,0 +1,130 @@
+{
+  "pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+    {
+      "path": "pages/login/login",
+      "style": {
+        "navigationBarTitleText": "智慧迎新",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/home/home",
+      "style": {
+        "navigationBarTitleText": "智慧迎新",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/test/test",
+      "style": {
+        "navigationBarTitleText": "智慧迎新",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/person/person",
+      "style": {
+        "navigationBarTitleText": "智慧迎新",
+        "enablePullDownRefresh": false
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#6cc4cb",
+    "backgroundColor": "#a3ede4"
+  },
+  "uniIdRouter": {},
+  "subPackages": [{
+    "root": "subpkg",
+    "pages": [{
+        "path": "login-style/login-style",
+        "style": {
+          "navigationBarTitleText": "智慧迎新",
+          "enablePullDownRefresh": false
+        }
+      },
+      {
+        "path": "InfoDetail/InfoDetail",
+        "style": {
+          "navigationBarTitleText": "张院迎新",
+          "enablePullDownRefresh": false
+        }
+      },
+      {
+        "path": "SchoolSite/SchoolSite",
+        "style": {
+          "navigationBarTitleText": "",
+          "enablePullDownRefresh": false
+        }
+      },
+      {
+        "path": "persondetail/persondetail",
+        "style": {
+          "navigationBarTitleText": "",
+          "enablePullDownRefresh": false
+        }
+      },
+      {
+        "path": "detaitest/detaitest",
+        "style": {
+          "navigationBarTitleText": "",
+          "enablePullDownRefresh": false
+        }
+      },
+      {
+        "path": "detailclub/detailclub",
+        "style": {
+          "navigationBarTitleText": "百团大战",
+          "enablePullDownRefresh": false
+        }
+      },
+      {
+        "path": "schoolmap/schoolmap",
+        "style": {
+          "navigationBarTitleText": "校园地图",
+          "enablePullDownRefresh": false
+        }
+      },
+      {
+        "path": "detailmessage/detailmessage",
+        "style": {
+          "navigationBarTitleText": "",
+          "enablePullDownRefresh": false
+        }
+      },
+      {
+        "path": "detailimage/detailimage",
+        "style": {
+          "navigationBarTitleText": "",
+          "enablePullDownRefresh": false
+        }
+      }
+    ]
+  }],
+  "tabBar": {
+    // "color": "a3ede4",
+    // "selectedColor": "#a3ede4",
+    // "backgroundColor": "a3ede4",
+    "list": [{
+        "pagePath": "pages/test/test",
+        "text": "打卡",
+        "iconPath": "static/center2/rabbit.png",
+        "selectedIconPath": "static/center2/squirrel.png"
+      },
+      {
+        "pagePath": "pages/home/home",
+        "text": "主页",
+        "iconPath": "static/center2/小猪.png",
+        "selectedIconPath": "static/center2/小猪储蓄罐-收入.png"
+      },
+      {
+        "pagePath": "pages/person/person",
+        "text": "个人",
+        "iconPath": "static/center2/dran.png",
+        "selectedIconPath": "static/center2/OTHER.png"
+      }
+    ]
+  }
+}

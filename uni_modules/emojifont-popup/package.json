@@ -1,0 +1,32 @@
+{
+    "id": "emojifont-popup",
+    "name": "EmojiFont-图片转字体ttf，完美支持android ios vue n",
+    "displayName": "EmojiFont-图片转字体ttf，完美支持vue nvue",
+    "version": "1.0.0",
+    "description": "将图片转换成字体文件ttf，emoji表情库",
+    "keywords": [
+        "emoji",
+        "表情包",
+        "输入框",
+        "input",
+        "聊天"
+    ],
+    "dcloudext": {
+        "category": [
+            "前端组件",
+            "通用组件"
+        ],
+        "contact": {
+            "qq": ""
+        },
+        "declaration": {
+            "ads": "无",
+            "data": "无 ",
+            "permissions": "无"
+        },
+        "npmurl": ""
+    },
+    "repository": "",
+    "engines": {
+    }
+}

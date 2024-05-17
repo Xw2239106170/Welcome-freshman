@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "payment": "/components/Payment/Payment"
+  },
+  "component": true
+}

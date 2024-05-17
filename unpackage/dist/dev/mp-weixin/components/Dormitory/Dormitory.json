@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "liu-clean-time": "/uni_modules/liu-clean-time/components/liu-clean-time/liu-clean-time"
+  },
+  "component": true
+}

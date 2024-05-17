@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "q-turntable": "/uni_modules/q-turntable/components/q-turntable/q-turntable"
+  },
+  "component": true
+}
