@@ -1,8 +1,5 @@
 {
   "navigationBarTitleText": "智慧迎新",
   "enablePullDownRefresh": false,
-  "usingComponents": {
-    "school-swiper": "/components/SchoolSwiper/SchoolSwiper",
-    "test-list": "/components/TestList/TestList"
-  }
+  "usingComponents": {}
 }

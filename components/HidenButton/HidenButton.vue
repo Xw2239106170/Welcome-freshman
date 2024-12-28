@@ -107,7 +107,8 @@
           })
           return
         }
-        if (e.item.text === '迎新') {
+        if (e.item.text === '咨询') {
+
           uni.navigateTo({
             url: '/subpkg/persondetail/persondetail?id=' + '8'
           })

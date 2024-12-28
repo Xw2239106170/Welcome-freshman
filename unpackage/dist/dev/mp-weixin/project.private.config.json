@@ -11,6 +11,62 @@
         {
           "name": "subpkg/persondetail/persondetail",
           "pathName": "subpkg/persondetail/persondetail",
+          "query": "id=9",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "subpkg/persondetail/persondetail",
+          "pathName": "subpkg/persondetail/persondetail",
+          "query": "id=12",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "subpkg/detailclub/detailclub",
+          "pathName": "subpkg/detailclub/detailclub",
+          "query": "clubId=0",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "subpkg/schoolInfo/schoolInfo",
+          "pathName": "subpkg/schoolInfo/schoolInfo",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "subpkg/persondetail/persondetail",
+          "pathName": "subpkg/persondetail/persondetail",
+          "query": "id=8",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "subpkg/detaitest/detaitest",
+          "pathName": "subpkg/detaitest/detaitest",
+          "query": "Testid=3",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "subpkg/persondetail/persondetail",
+          "pathName": "subpkg/persondetail/persondetail",
+          "query": "id=1",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "subpkg/schoolInfo/schoolInfo",
+          "pathName": "subpkg/schoolInfo/schoolInfo",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "subpkg/persondetail/persondetail",
+          "pathName": "subpkg/persondetail/persondetail",
           "query": "id=1",
           "launchMode": "default",
           "scene": null

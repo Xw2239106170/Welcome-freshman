@@ -32,7 +32,7 @@
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#6cc4cb",
+    "navigationBarBackgroundColor": "#efefef",
     "backgroundColor": "#a3ede4"
   },
   "uniIdRouter": {},
@@ -100,6 +100,48 @@
           "navigationBarTitleText": "",
           "enablePullDownRefresh": false
         }
+      },
+      {
+        "path": "detailNews/detailNews",
+        "style": {
+          "navigationBarTitleText": ""
+        }
+      },
+      {
+        "path": "schoolCalender/schoolCalender",
+        "style": {
+          "navigationBarTitleText": "校历"
+        }
+      },
+      {
+        "path": "detailCET/detailCET",
+        "style": {
+          "navigationBarTitleText": "英语考试"
+        }
+      },
+      {
+        "path": "schoolInfo/schoolInfo",
+        "style": {
+          "navigationBarTitleText": "校园咨询"
+        }
+      },
+      {
+        "path": "DetailPost/DetailPost",
+        "style": {
+          "navigationBarTitleText": "发布动态"
+        }
+      },
+      {
+        "path": "HotNewsDetail/HotNewsDetail",
+        "style": {
+          "navigationBarTitleText": "热点新闻"
+        }
+      },
+      {
+        "path": "collecthonor/collecthonor",
+        "style": {
+          "navigationBarTitleText": ""
+        }
       }
     ]
   }],
@@ -110,20 +152,20 @@
     "list": [{
         "pagePath": "pages/test/test",
         "text": "打卡",
-        "iconPath": "static/center2/rabbit.png",
-        "selectedIconPath": "static/center2/squirrel.png"
+        "iconPath": "static/first/xiaoqudongtai.png",
+        "selectedIconPath": "static/first/xiaoqudongtai.png"
       },
       {
         "pagePath": "pages/home/home",
         "text": "主页",
-        "iconPath": "static/center2/小猪.png",
-        "selectedIconPath": "static/center2/小猪储蓄罐-收入.png"
+        "iconPath": "static/first/zhuye-5.png",
+        "selectedIconPath": "static/first/zhuye-5.png"
       },
       {
         "pagePath": "pages/person/person",
         "text": "个人",
-        "iconPath": "static/center2/dran.png",
-        "selectedIconPath": "static/center2/OTHER.png"
+        "iconPath": "static/first/geren.png",
+        "selectedIconPath": "static/first/geren.png"
       }
     ]
   }

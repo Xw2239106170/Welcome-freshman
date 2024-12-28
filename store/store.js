@@ -6,6 +6,7 @@ import user from './user.js'
 import test from './test.js'
 import message from './message.js'
 import comment from './comment.js'
+import post from './post.js'
 
 // 2. 将 Vuex 安装为 Vue 的插件
 Vue.use(Vuex)
@@ -18,7 +19,8 @@ const store = new Vuex.Store({
     user,
     test,
     message,
-    comment
+    comment,
+    post
   },
 })
 

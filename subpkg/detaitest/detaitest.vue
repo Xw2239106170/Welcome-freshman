@@ -1,70 +1,131 @@
+<!-- pages/publish/publish.vue -->
 <template>
-  <view>
-    <view class="face-box">
-      <view class="face-top">
-        <image :src="newImage || defaultPic" mode="aspectFill" class="face-image" @click="upload">
-        </image>
+  <view class="publish-container">
+    <view class="publish-content">
+      <!-- 文本输入区 -->
+      <textarea class="content-textarea" v-model="content" placeholder="分享你此刻的想法..." maxlength="500"
+        :focus="textareaFocus" @focus="textareaFocus = true" @blur="textareaFocus = false"></textarea>
+
+      <!-- 图片上传区域 -->
+      <view class="image-upload-area">
+        <view v-for="(image, index) in images" :key="index" class="image-preview-item">
+          <image :src="image" mode="aspectCover" />
+          <view class="delete-image-btn" @tap="deleteImage(index)">
+            ×
+          </view>
+        </view>
+
+        <!-- 添加图片按钮 -->
+        <view v-if="images.length < 9" class="add-image-btn" @tap="chooseImage">
+          <text class="iconfont icon-add">+</text>
+        </view>
       </view>
-      <view class="desc-image" style="border-top: 2px solid black;">
-        <textarea name="" id="" cols="30" rows="10" v-model="content" placeholder="这一刻的想法..." class="pioner"></textarea>
+
+      <!-- 标签选择区域 -->
+      <view class="tags-container">
+        <view class="tags-label">选择标签：</view>
+        <scroll-view scroll-x class="tags-scroll">
+          <view class="tags-wrapper">
+            <view v-for="tag in availableTags" :key="tag" class="tag-item"
+              :class="{ 'tag-selected': selectedTags.includes(tag) }" @tap="toggleTag(tag)">
+              {{ tag }}
+            </view>
+          </view>
+        </scroll-view>
       </view>
-      <!-- 发布 -->
-      <button @click="postTest(['fade', 'slide-top'])" class="upload-button">
-        <image src="../../static/center2/photo.png" mode="" class="upload-icon"></image>发布精彩时刻
-      </button>
-    </view>
-    <view class="example">
-      <uni-transition ref="ani" custom-class="transition" mode-class="fade" :styles="styles" :show="show"
-        class="middle">
-        <image src="https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/9bcfc0cb-5a2a-4ed7-ac1c-0afdded8ce20.gif"
-          mode=""></image>
-      </uni-transition>
+
+      <!-- 发布操作区 -->
+      <view class="publish-actions">
+        <view class="action-left" @click="chooseLocation">
+          <text class="iconfont icon-location" v-if="!location">📍</text>
+          <text v-else>{{location}}</text>
+        </view>
+        <view class="action-right">
+          <text class="char-count">{{ content.length }}/500</text>
+          <button class="publish-btn" @click="postTest(['fade', 'slide-top'])" :disabled="!canPublish">
+            发布
+          </button>
+        </view>
+      </view>
     </view>
   </view>
 </template>
 
 <script>
   import {
+    card,
+    ranks
+  } from '../../utils/mock'
+  import {
     mapMutations,
     mapState,
     mapGetters
   } from 'vuex'
-  const img = '../../static/location.png';
   export default {
-    name: "FinishTest",
+    data() {
+      return {
+        id: '',
+        content: '',
+        images: [],
+        location: '',
+        textareaFocus: false,
+        availableTags: [
+          '日常', '旅行', '美食',
+          '技术', '音乐', '摄影',
+          '电影', '运动', '艺术', '游戏'
+        ],
+        selectedTags: []
+      }
+    },
     computed: {
       ...mapState('test', ['newImage']),
       // ...mapGetters('test', ['backImage'])
-      ...mapState('user', ['UserAvatar'])
-    },
-    data() {
-      return {
-        defaultPic: '/static/center2/add.png',
-        id: '',
-        content: '',
-        styles: {},
-        show: false
-      };
+      ...mapState('user', ['UserAvatar']),
+      canPublish() {
+        return this.content.trim().length > 0
+      }
     },
     methods: {
       ...mapMutations('test', ['getAddImage', 'backImage', 'disImage', 'postImage', 'finishTest', 'addMarkers']),
       ...mapMutations('user', ['addLottery']),
       ...mapMutations('button', ['addexperience']),
-      async upload() {
-        const res = await uni.chooseMedia({
-          count: 1,
-          mediaType: ['image'],
-          sourceType: ['album', 'camera']
-        });
-        console.log(res)
-        this.getAddImage({
-          image: res.tempFiles[0].tempFilePath,
-          id: this.id
-        });
-        // this.backImage(this.id)
+      chooseImage() {
+        uni.chooseImage({
+          count: 9 - this.images.length,
+          sizeType: ['original', 'compressed'],
+          sourceType: ['album', 'camera'],
+          success: (res) => {
+            this.images = [...this.images, ...res.tempFilePaths],
+              console.log(res.tempFilePaths)
+            this.getAddImage({
+              image: res.tempFilePaths[0],
+              id: this.id
+            });
+          }
+        })
+      },
+      deleteImage(index) {
+        this.images.splice(index, 1)
+      },
+      toggleTag(tag) {
+        const index = this.selectedTags.indexOf(tag)
+        if (index > -1) {
+          this.selectedTags.splice(index, 1)
+        } else {
+          this.selectedTags.push(tag)
+        }
+      },
+      chooseLocation() {
+        uni.chooseLocation({
+          success: (res) => {
+            this.location = res.name
+            console.log(this.location)
+          }
+        })
       },
       // 发布打卡
       async postTest(type) {
+        // card[3].collected = true
         this.show = !this.show
         this.modeClass = type
         if (this.content === '') return uni.$showMsg('发表你的感想哦~')
@@ -129,84 +190,138 @@
     onLoad(option) {
       this.disImage()
       this.id = option.Testid
+      console.log(this.id)
     },
-    onReady() {
-      this.$refs.ani.step({
-        duration: 1000,
-        timingFunction: 'linear',
-        delay: 500,
-      })
-    }
   }
 </script>
 
-<style lang="scss">
-  .face-box {
-    background-color: #fff;
-    border-radius: 10rpx;
+<style lang="scss" scoped>
+  .publish-container {
+    background-color: #F5F5F5;
+    min-height: 100vh;
     padding: 20rpx;
-    box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
   }
 
-  .face-top {
-    height: 500rpx;
+  .publish-content {
+    background-color: #FFFFFF;
+    border-radius: 20rpx;
+    padding: 30rpx;
+    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  }
+
+  .content-textarea {
     width: 100%;
-    text-align: center;
+    min-height: 250rpx;
+    background-color: #F9F9F9;
+    border-radius: 16rpx;
+    padding: 20rpx 0;
     margin-bottom: 20rpx;
+    font-size: 28rpx;
   }
 
-  .face-image {
-    width: 400rpx;
-    height: 400rpx;
-    // border-radius: 50%;
-  }
-
-  .upload-button {
-    background-color: #007aff;
-    color: #fff;
-    border: none;
-    padding: 10rpx 20rpx;
-    border-radius: 5rpx;
-    cursor: pointer;
-    font-size: 14px;
-    height: 100rpx;
+  .image-upload-area {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20rpx;
+    margin-bottom: 30rpx;
+
+    .image-preview-item {
+      position: relative;
+      width: 180rpx;
+      height: 180rpx;
+      border-radius: 16rpx;
+      overflow: hidden;
+
+      image {
+        width: 100%;
+        height: 100%;
+      }
+
+      .delete-image-btn {
+        position: absolute;
+        top: 10rpx;
+        right: 10rpx;
+        background-color: rgba(255, 0, 0, 0.7);
+        color: white;
+        width: 40rpx;
+        height: 40rpx;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .add-image-btn {
+      width: 180rpx;
+      height: 180rpx;
+      border: 2rpx dashed #E0E0E0;
+      border-radius: 16rpx;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 60rpx;
+    }
   }
 
-  .upload-icon {
-    width: 40rpx;
-    height: 40rpx;
-    margin-right: 10rpx;
+  .tags-container {
+    margin-bottom: 30rpx;
+
+    .tags-scroll {
+      white-space: nowrap;
+      width: 100%;
+    }
+
+    .tags-wrapper {
+      display: inline-flex;
+      gap: 20rpx;
+    }
+
+    .tag-item {
+      display: inline-block;
+      padding: 10rpx 20rpx;
+      background-color: #F0F0F0;
+      border-radius: 30rpx;
+      font-size: 26rpx;
+      color: #666;
+      transition: all 0.3s;
+    }
+
+    .tag-selected {
+      background-color: #4B9DFE;
+      color: white;
+    }
   }
 
-  .pioner {
-    margin-top: 10rpx;
-    caret-color: green;
-  }
-
-  .example {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    /* #ifndef APP-NVUE */
+  .publish-actions {
     display: flex;
-    /* #endif */
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    height: 150px;
-  }
 
-  .middle {
-    justifyContent: 'center';
-    alignItems: 'center';
-    width: '100px';
-    height: '100px';
-    borderRadius: '5px';
-    textAlign: 'center';
-    backgroundColor: '#4cd964';
-    boxShadow: '0 0 5px 1px rgba(0,0,0,0.2)';
+    .action-left {
+      display: flex;
+      gap: 30rpx;
+      color: #999;
+    }
+
+    .action-right {
+      display: flex;
+      align-items: center;
+      gap: 20rpx;
+
+      .char-count {
+        color: #999;
+        font-size: 24rpx;
+      }
+
+      .publish-btn {
+        background-color: #4B9DFE;
+        color: white;
+        padding: 10rpx 30rpx;
+        border-radius: 30rpx;
+        font-size: 28rpx;
+      }
+    }
   }
 </style>

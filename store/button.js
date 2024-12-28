@@ -5,7 +5,7 @@ export default {
   // 模块的 state 数据
   state: () => ({
     rank: 1,
-    experience: 20,
+    experience: 50,
     isShow: true,
     content: [{
         iconPath: 'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/b0590a2c-37a3-44a7-88f9-137477b98198.png',
@@ -24,9 +24,9 @@ export default {
         text: '帮派',
         active: false
       }, {
-        iconPath: "https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/47b0f3b4-d426-4512-afa9-284ed58707fc.png",
-        selectedIconPath: 'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/47b0f3b4-d426-4512-afa9-284ed58707fc.png',
-        text: '迎新',
+        iconPath: "https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/377f8a09-2468-4214-8319-047d8b000b0d.png",
+        selectedIconPath: 'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/377f8a09-2468-4214-8319-047d8b000b0d.png',
+        text: '咨询',
         active: false
       }
     ],

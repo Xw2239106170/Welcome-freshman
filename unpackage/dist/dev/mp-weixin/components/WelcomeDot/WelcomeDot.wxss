@@ -1,67 +1,134 @@
-@charset "UTF-8";
-/**
- * 这里是uni-app内置的常用样式变量
- *
- * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
- * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
- *
- */
-/**
- * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
- *
- * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
- */
-/* 颜色变量 */
-/* 行为相关颜色 */
-/* 文字基本颜色 */
-/* 背景颜色 */
-/* 边框颜色 */
-/* 尺寸变量 */
-/* 文字尺寸 */
-/* 图片尺寸 */
-/* Border Radius */
-/* 水平间距 */
-/* 垂直间距 */
-/* 透明度 */
-/* 文章场景相关 */
-.welcome-page {
-  width: 100%;
-  height: 100vh;
-  background-color: #efefef;
-  padding: 10rpx;
-}
-.welcome-page .welcome-speed {
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  height: 300px;
-  margin-bottom: 50px;
+
+.ai-chat-window.data-v-c6827538 {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  background-color: #fff;
+  height: 100vh;
+  background-color: #f5f5f5;
 }
-.welcome-page .welcome-speed .item-detail {
-  width: 100%;
-  height: 250px;
-}
-.welcome-page .welcome-speed .item-title {
-  line-height: 50px;
-  width: 100%;
-  height: 50px;
-  font-size: 25px;
-  font-weight: bold;
+.chat-header.data-v-c6827538 {
+  background: linear-gradient(to right, #4a90e2, #8e44ad);
+  /* 左到右的渐变颜色 */
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #007AFF;
+  color: white;
 }
-.welcome-page .welcome-speed .item-title .train {
-  margin-top: 4px;
-  margin-left: 5px;
-  height: 30px;
+.header-left.data-v-c6827538 {
+  display: flex;
+  align-items: center;
+}
+.ai-icon.data-v-c6827538 {
   width: 30px;
+  height: 30px;
+  margin-right: 10px;
 }
-.welcome-page .welcome-speed .item-title .train image {
-  width: 100%;
-  height: 100%;
+.header-title.data-v-c6827538 {
+  font-weight: bold;
+  font-size: 18px;
+}
+.voice-icon.data-v-c6827538 {
+  width: 24px;
+  height: 24px;
+}
+.messages-container.data-v-c6827538 {
+  flex-grow: 1;
+  padding: 15px 0;
+  background-color: white;
+}
+.message-list.data-v-c6827538 {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 150rpx;
+}
+.message-item.data-v-c6827538 {
+  display: flex;
+  margin-bottom: 15px;
+  align-items: flex-start;
+}
+.message-avatar.data-v-c6827538 {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+.avatar-icon.data-v-c6827538 {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+}
+.message-content.data-v-c6827538 {
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 10px;
+  position: relative;
+}
+.user-message.data-v-c6827538 {
+  flex-direction: row-reverse;
+}
+.user-content.data-v-c6827538 {
+  background-color: #007AFF;
+  color: white;
+  margin-left: 10px;
+}
+.ai-content.data-v-c6827538 {
+  background-color: #f0f0f0;
+  color: black;
+  margin-right: 10px;
+}
+.message-status.data-v-c6827538 {
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+}
+.status-icon.data-v-c6827538 {
+  width: 20px;
+  height: 20px;
+}
+.input-container.data-v-c6827538 {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 10px;
+  background-color: white;
+  border-top-width: 1px;
+  border-top-color: #e0e0e0;
+}
+.attach-button.data-v-c6827538 {
+  margin-right: 10px;
+}
+.attach-icon.data-v-c6827538 {
+  width: 30px;
+  height: 30px;
+}
+.message-input.data-v-c6827538 {
+  flex-grow: 1;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  padding: 10px;
+  min-height: 40px;
+  max-height: 80px;
+  margin-right: 10px;
+  width: 550rpx;
+  /*    box-sizing: border-box;
+  overflow: hidden; */
+}
+.send-button.data-v-c6827538 {
+  background-color: #007AFF;
+  border-radius: 25px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.send-icon.data-v-c6827538,
+.loading-icon.data-v-c6827538 {
+  width: 30px;
+  height: 30px;
+}
+.send-disabled.data-v-c6827538 {
+  opacity: 0.5;
 }
 

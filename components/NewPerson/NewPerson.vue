@@ -68,14 +68,12 @@
     },
     data() {
       return {
-        // experience: 20,
-        // isShow: false,
         toolList: [{
           id: 9,
-          img: "https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/978af6f9-5922-48ed-83b1-c9ad84f2a425.png"
+          img: "https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/6d36467b-bca8-4755-a099-11e3e19bb594.png"
         }, {
           id: 7,
-          img: 'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/2f02e8f0-e6c8-425a-97ed-e9233b0bd3dc.png'
+          img: 'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/d6fdfbb5-ee56-4bc4-b4fa-fcb62847dc40.png'
         }, {
           id: 5,
           img: 'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/c23d8d18-89ee-401c-ab3a-38745e323ecb.png'
@@ -88,10 +86,10 @@
           img: '/static/center2/crown-fill.png'
         }, {
           id: 12,
-          img: 'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/4d5b66cc-7989-4950-ba16-8d9fabad53ec.png'
+          img: 'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/d1409ca7-f50a-4a8c-a9aa-d7c90ee39385.png'
         }, {
           id: 13,
-          img: 'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/ee8c68b1-0a4c-4825-8d74-a1d617bd0901.png'
+          img: 'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/9880c781-8ccf-4b68-a7a2-cc6a7d8f6d77.png'
         }, {
           id: 14,
           img: 'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/d66d41b3-ae40-4461-9774-d822e6250d06.png'
@@ -226,7 +224,7 @@
           width: 80px;
           height: 85%;
           background-color: #fff;
-          border-radius: 50%;
+          border-radius: 20rpx;
           display: flex;
           align-items: center;
           justify-content: center;

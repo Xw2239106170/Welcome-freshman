@@ -25,57 +25,163 @@
 /* 透明度 */
 /* 文章场景相关 */
 .container {
-  padding: 20rpx;
-  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding: 30rpx;
+  background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
 }
-.face-box {
-  background-color: #fff;
-  border-radius: 10rpx;
-  padding: 20rpx;
-  box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
+.content-wrapper {
+  max-width: 750rpx;
+  margin: 0 auto;
 }
-.face-top {
-  height: 500rpx;
-  width: 100%;
+.photo-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 24rpx;
+  padding: 40rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 30rpx rgba(0, 0, 0, 0.1);
+  -webkit-backdrop-filter: blur(10rpx);
+          backdrop-filter: blur(10rpx);
+}
+.photo-card .card-header {
   text-align: center;
-  margin-bottom: 20rpx;
+  margin-bottom: 30rpx;
 }
-.face-image {
-  width: 400rpx;
-  height: 400rpx;
-  border-radius: 50%;
+.photo-card .card-header .card-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #1E1B4B;
+  display: block;
 }
-.upload-button {
-  background-color: #007aff;
-  color: #fff;
-  border: none;
-  padding: 10rpx 20rpx;
-  border-radius: 5rpx;
-  cursor: pointer;
-  font-size: 14px;
-  height: 100rpx;
+.photo-card .card-header .card-subtitle {
+  font-size: 26rpx;
+  color: #6B7280;
+  margin-top: 10rpx;
+  display: block;
+}
+.camera-container {
+  position: relative;
+  width: 100%;
+  height: 800rpx;
+  border-radius: 20rpx;
+  overflow: hidden;
+  background: linear-gradient(135deg, #E0E7FF 0%, #C7D2FE 100%);
+  margin-bottom: 30rpx;
+}
+.camera-container .camera {
+  width: 100%;
+  height: 100%;
+}
+.camera-container .success-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(79, 70, 229, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.upload-icon {
+.camera-container .success-overlay .success-icon {
+  width: 120rpx;
+  height: 120rpx;
+}
+.camera-container .guide-frame {
+  position: absolute;
+  top: 20rpx;
+  left: 20rpx;
+  right: 20rpx;
+  bottom: 20rpx;
+  border: 4rpx dashed rgba(79, 70, 229, 0.3);
+  border-radius: 16rpx;
+  pointer-events: none;
+}
+.capture-btn {
+  width: 100%;
+  height: 88rpx;
+  background: #4F46E5;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-size: 32rpx;
+  font-weight: 500;
+  border: none;
+  margin-bottom: 30rpx;
+}
+.capture-btn.processing {
+  background: #C7D2FE;
+  color: #6366F1;
+}
+.capture-btn.disabled {
+  opacity: 0.5;
+}
+.capture-btn .btn-icon {
   width: 40rpx;
   height: 40rpx;
   margin-right: 10rpx;
 }
-.face-bottom {
-  margin-top: 20rpx;
-  width: 100%;
-}
-.face-bottom .bottom-item {
+.agreement-box {
   display: flex;
-  flex-direction: column;
-  margin-left: 20rpx;
-  margin-top: 10rpx;
+  align-items: center;
+  padding: 20rpx;
+  background: #EEF2FF;
+  border-radius: 16rpx;
 }
-.face-bottom .bottom-item text {
-  margin-bottom: 10rpx;
-  color: red;
+.agreement-box .agreement-text {
+  font-size: 26rpx;
+  color: #1E1B4B;
+  margin-left: 10rpx;
 }
-/* 可以继续添加其他样式 */
+.agreement-box .agreement-text .link {
+  color: #4F46E5;
+}
+.notice-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 24rpx;
+  padding: 40rpx;
+  box-shadow: 0 4rpx 30rpx rgba(0, 0, 0, 0.1);
+  -webkit-backdrop-filter: blur(10rpx);
+          backdrop-filter: blur(10rpx);
+}
+.notice-card .notice-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+.notice-card .notice-header .notice-icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 10rpx;
+}
+.notice-card .notice-header .notice-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #1E1B4B;
+}
+.guidelines .guideline-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20rpx;
+}
+.guidelines .guideline-item .guideline-number {
+  width: 40rpx;
+  height: 40rpx;
+  background: #EEF2FF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  color: #4F46E5;
+  font-weight: 500;
+  flex-shrink: 0;
+  margin-right: 20rpx;
+}
+.guidelines .guideline-item .guideline-text {
+  font-size: 26rpx;
+  color: #4B5563;
+  flex: 1;
+}
 

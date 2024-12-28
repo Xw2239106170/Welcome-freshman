@@ -11,8 +11,8 @@ import store from './store/store.js'
 // 配置网络请求
 uni.$http = $http
 // 配置请求根路径
-$http.baseUrl = 'http://192.168.14.54:8080'
-// $http.baseUrl = 'https://api-hmugo-web.itheima.net'
+// $http.baseUrl = 'http://192.168.7.54:8083'
+$http.baseUrl = 'http://localhost:8083'
 // 172.20.10.8
 
 uni.$showMsg = function(title = '数据加载失败！', duration = 1500) {

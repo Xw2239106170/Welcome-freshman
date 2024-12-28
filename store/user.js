@@ -5,7 +5,7 @@ export default {
   // 模块的 state 数据
   state: () => ({
     lottery: 1,
-    token: uni.getStorageSync('token') || '',
+    token: uni.getStorageSync('token') || '122212121',
     userInfo: {
       name: '徐多多',
       num: '2212040252',

@@ -1,225 +1,393 @@
 <template>
-  <view class="page-box">
-    <!-- 学生个人信息 -->
-    <view class="info">
-      <view class="student-info">
-        <text>学号：2212040252</text>
-        <text>班级：软件工程二班</text>
-        <text>姓名：徐多多</text>
-        <text>身份证：1234567890</text>
-      </view>
-      <view class="avatar">
-        <image :src="UserAvatar || defaultPic" mode=""></image>
-      </view>
-    </view>
+  <view class="container">
+    <!-- 页面背景 -->
+    <view class="header-bg"></view>
 
-    <!-- Tab 导航 -->
-    <view class="tab-nav">
-      <text :class="{ active: currentTab === 'unpaid' }" @tap="currentTab = 'unpaid'">未缴费项目</text>
-      <text :class="{ active: currentTab === 'paid' }" @tap="currentTab = 'paid'">已缴费项目</text>
-    </view>
-    <!-- Tab 内容 -->
-    <view v-show="currentTab === 'unpaid'" class="tab-content">
-      <Payment v-for="(item, index) in todoNeed" :key="index" :item='item' v-if='todoNeed.length > 0'></Payment>
-      <view class="empty-cart" v-else>
-        <image src="/static/money/empty.png" class="empty-img"></image>
-        <text class="tip-text">空空如也~</text>
+    <!-- 主要内容区 -->
+    <view class="content">
+      <!-- 顶部信息 -->
+      <view class="page-header">
+        <text class="page-title">缴费中心</text>
+        <text class="page-desc">2024学年学费缴纳</text>
       </view>
-    </view>
 
-    <view v-show="currentTab === 'paid'" class="tab-content">
-      <Payment v-for="(item, index) in backStated" :key="index" :item='item' v-if="backStated.length > 0"></Payment>
-      <view class="empty-cart" v-else>
-        <image src="/static/money/empty.png" class="empty-img"></image>
-        <text class="tip-text">空空如也~</text>
-      </view>
-    </view>
+      <!-- 表单区域 -->
+      <view class="form-box">
+        <!-- 学生信息 -->
+        <view class="form-item">
+          <text class="form-label">学生姓名</text>
+          <input type="text" v-model="formData.studentName" placeholder="请输入姓名" placeholder-style="color: #999"
+            class="form-input" />
+        </view>
 
-    <view class="pay-sum">
-      <view class="sum-left" v-if='!doneNeed'>
-        <radio :checked="allRadio" @click="changeAllRadio"></radio>
-        <text>全选</text>
+        <view class="form-item">
+          <text class="form-label">学号</text>
+          <input type="text" v-model="formData.studentId" placeholder="请输入学号" placeholder-style="color: #999"
+            class="form-input" />
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">年级</text>
+          <picker @change="handleGradeChange" :value="gradeIndex" :range="grades" class="picker-box">
+            <view class="picker-value">
+              <text :class="formData.grade ? 'selected-text' : 'placeholder-text'">
+                {{ formData.grade || '请选择年级' }}
+              </text>
+              <text class="picker-arrow">></text>
+            </view>
+          </picker>
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">学期</text>
+          <picker @change="handleSemesterChange" :value="semesterIndex" :range="semesters" class="picker-box">
+            <view class="picker-value">
+              <text class="selected-text">{{ formData.semester }}</text>
+              <text class="picker-arrow">></text>
+            </view>
+          </picker>
+        </view>
+
+        <!-- 金额展示 -->
+        <view class="amount-section">
+          <view class="amount-title">应缴金额</view>
+          <view class="amount-value">
+            <text class="amount-symbol">¥</text>
+            <text class="amount-number">{{ formData.amount.toLocaleString() }}</text>
+          </view>
+        </view>
+
+        <!-- 支付方式选择 -->
+        <view class="payment-section">
+          <text class="section-title">选择支付方式</text>
+          <view class="payment-options">
+            <view v-for="(item, index) in paymentMethods" :key="index" class="payment-item"
+              :class="{'payment-item-active': formData.paymentMethod === item.method}"
+              @tap="selectPayment(item.method)">
+              <image :src="item.image" class="payment-icon"></image>
+              <text class="payment-name">{{ item.method }}</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 缴费说明 -->
+        <view class="notice-box">
+          <view class="notice-item">
+            <text class="dot">•</text>
+            <text class="notice-text">请认真核对个人信息及缴费金额</text>
+          </view>
+          <view class="notice-item">
+            <text class="dot">•</text>
+            <text class="notice-text">支付完成后将自动生成电子收据</text>
+          </view>
+          <view class="notice-item">
+            <text class="dot">•</text>
+            <text class="notice-text">如有问题请联系财务处</text>
+          </view>
+        </view>
       </view>
-      <view class="sum-right">
-        <text style="font-weight: bold; font-size: 20px; margin-top: 30rpx;">需缴：{{sumTuition | fixed}} </text>
-        <button type="primary" @click="submitMoney" :disabled="doneNeed">缴费</button>
+
+      <!-- 底部按钮 -->
+      <view class="bottom-btn-area">
+        <button class="submit-btn" @tap="handleSubmit">
+          确认支付 ¥{{ formData.amount.toLocaleString() }}
+        </button>
       </view>
     </view>
   </view>
 </template>
 
 <script>
-  import {
-    mapState,
-    mapMutations,
-    mapGetters
-  } from 'vuex';
   export default {
-    name: "Tutition",
-    computed: {
-      ...mapState('user', ['UserAvatar', 'payNeed']),
-      ...mapGetters('user', ['allRadio', 'sumTuition', 'backStated', 'todoNeed', 'doneNeed'])
-    },
     data() {
       return {
-        currentTab: 'unpaid', // 默认选中未缴费项目,
-        defaultPic: '/static/defaultmobile.png' // 修正图片路径
-      };
-    },
-    onLoad() {},
-    methods: {
-      ...mapMutations('user', ['changeRadio', 'changeMoneyState']),
-      changeAllRadio() {
-        this.changeRadio()
-      },
-      submitMoney() {
-        if (!this.allRadio) return uni.$showMsg('还有未选择的缴费项目')
-
-        uni.showModal({
-          title: "提示",
-          content: '是否办理生源地贷款？',
-          showCancel: true, // 是否显示取消按钮
-          confirmText: '办理了',
-          cancelText: "没有办理",
-          success: (res) => {
-            this.changeMoneyState()
-            uni.$showMsg('缴费成功！')
+        formData: {
+          studentName: '',
+          studentId: '',
+          grade: '',
+          semester: '第一学期',
+          amount: 0,
+          paymentMethod: '微信支付'
+        },
+        grades: ['大一', '大二', '大三', '大四'],
+        gradeIndex: -1,
+        semesters: ['第一学期', '第二学期'],
+        semesterIndex: 0,
+        paymentMethods: [{
+            method: "微信支付",
+            image: 'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/14dd8ad9-385c-4594-838f-93b0e37bd460.png'
+          },
+          {
+            method: "支付宝",
+            image: 'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/1f402a1d-312b-4311-b02f-5328a2c1f748.png'
+          }, {
+            method: "银行卡",
+            image: 'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/cf4af982-64f0-4f16-a030-3d6e38ee7b5b.png'
           }
-        })
+        ],
+        tuitionRates: {
+          '大一': 3000,
+          '大二': 4000,
+          '大三': 5000,
+          '大四': 8000
+        }
       }
     },
-    filters: {
-      fixed(value) {
-        return value.toFixed(2)
+    methods: {
+      handleGradeChange(e) {
+        const grade = this.grades[e.detail.value]
+        this.gradeIndex = e.detail.value
+        this.formData.grade = grade
+        this.formData.amount = this.tuitionRates[grade] || 0
+      },
+      handleSemesterChange(e) {
+        this.semesterIndex = e.detail.value
+        this.formData.semester = this.semesters[e.detail.value]
+      },
+      selectPayment(method) {
+        this.formData.paymentMethod = method
+      },
+      handleSubmit() {
+        if (!this.formData.studentName || !this.formData.studentId || !this.formData.grade) {
+          uni.showToast({
+            title: '请填写完整信息',
+            icon: 'none'
+          })
+          return
+        }
+
+        uni.showLoading({
+          title: '处理中...'
+        })
+
+        setTimeout(() => {
+          uni.hideLoading()
+          uni.showToast({
+            title: '支付成功',
+            icon: 'success'
+          })
+        }, 1500)
       }
     }
   }
 </script>
 
 <style lang="scss">
-  .page-box {
-    background-color: #efefef;
-    padding: 20rpx;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: linear-gradient(to bottom, #6cc4cb, white);
+  page {
+    background-color: #f5f6fa;
+  }
 
-    .pay-sum {
-      display: flex;
-      margin-top: 20rpx;
-      width: 100%;
-      height: 120rpx;
-      background-color: #efefef;
-      border-radius: 20px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      position: fixed;
-      bottom: 20rpx;
-      left: 0;
+  .container {
+    min-height: 100vh;
+    position: relative;
+  }
 
-      .sum-left {
-        height: 100%;
-        width: 30%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+  .header-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 400rpx;
+    background: linear-gradient(180deg, #4080ff 0%, #466dff 100%);
+    border-radius: 0 0 50rpx 50rpx;
+  }
 
-      .sum-right {
-        height: 100%;
-        width: 70%;
-        display: flex;
-        align-content: center;
-        justify-content: space-around;
+  .content {
+    position: relative;
+    z-index: 1;
+    padding: 40rpx 30rpx;
+  }
 
-        button {
-          margin-top: 10rpx;
-          height: 100rpx;
-          width: 200rpx;
-          line-height: 100rpx;
-        }
-      }
+  .page-header {
+    padding: 40rpx 0;
+    text-align: center;
+    color: #fff;
+
+    .page-title {
+      font-size: 48rpx;
+      font-weight: bold;
+      display: block;
+      margin-bottom: 16rpx;
+    }
+
+    .page-desc {
+      font-size: 28rpx;
+      opacity: 0.9;
     }
   }
 
-  .info {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20rpx;
+  .form-box {
+    background: #fff;
+    border-radius: 24rpx;
+    padding: 40rpx 30rpx;
+    margin-top: 40rpx;
+    box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
   }
 
-  .student-info {
-    width: 50%;
-    height: 200rpx;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 20rpx;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-  }
+  .form-item {
+    margin-bottom: 40rpx;
 
-  .avatar image {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-  }
-
-  .tab-nav {
-    display: flex;
-    margin-bottom: 10rpx;
-
-    text {
-      padding: 10rpx 20rpx;
-      margin-right: 10rpx;
-      background-color: #fff;
-      border-radius: 10px;
+    .form-label {
+      font-size: 28rpx;
       color: #333;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .active {
-      background-color: #333;
-      color: #fff;
-    }
-
-    text:hover {
-      background-color: #ccc;
+      margin-bottom: 16rpx;
+      display: block;
+      font-weight: 500;
     }
   }
 
-  .tab-content {
-    padding: 20rpx;
+  .form-input {
     width: 100%;
-    background-color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 90rpx;
+    background: #f8f9fc;
+    border-radius: 12rpx;
+    padding: 0 30rpx;
+    font-size: 30rpx;
+    color: #333;
   }
 
-  /* 空空如也 */
-  .empty-cart {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 150px;
+  .picker-box {
+    .picker-value {
+      height: 90rpx;
+      background: #f8f9fc;
+      border-radius: 12rpx;
+      padding: 0 30rpx;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .selected-text {
+        font-size: 30rpx;
+        color: #333;
+      }
+
+      .placeholder-text {
+        font-size: 30rpx;
+        color: #999;
+      }
+
+      .picker-arrow {
+        color: #999;
+        font-family: "宋体";
+        transform: rotate(90deg);
+      }
+    }
   }
 
-  .empty-cart .empty-img {
-    width: 90px;
-    height: 90px;
+  .amount-section {
+    margin: 50rpx 0;
+    text-align: center;
+
+    .amount-title {
+      font-size: 28rpx;
+      color: #666;
+      margin-bottom: 20rpx;
+    }
+
+    .amount-value {
+      .amount-symbol {
+        font-size: 40rpx;
+        color: #333;
+        margin-right: 8rpx;
+      }
+
+      .amount-number {
+        font-size: 60rpx;
+        color: #333;
+        font-weight: bold;
+      }
+    }
   }
 
-  .empty-cart .tip-text {
-    font-size: 12px;
-    color: gray;
-    margin-top: 15px;
+  .payment-section {
+    margin-bottom: 50rpx;
+
+    .section-title {
+      font-size: 28rpx;
+      color: #333;
+      margin-bottom: 30rpx;
+      display: block;
+      font-weight: 500;
+    }
+
+    .payment-options {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .payment-item {
+      flex: 1;
+      height: 140rpx;
+      background: #f8f9fc;
+      margin: 0 10rpx;
+      border-radius: 12rpx;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      &-active {
+        background: #edf3ff;
+        border: 2rpx solid #4080ff;
+      }
+
+      .payment-icon {
+        width: 60rpx;
+        height: 60rpx;
+        margin-bottom: 12rpx;
+      }
+
+      .payment-name {
+        font-size: 24rpx;
+        color: #666;
+      }
+    }
+  }
+
+  .notice-box {
+    background: #f8f9fc;
+    padding: 30rpx;
+    border-radius: 12rpx;
+
+    .notice-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 16rpx;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .dot {
+        color: #666;
+        margin-right: 12rpx;
+      }
+
+      .notice-text {
+        font-size: 24rpx;
+        color: #666;
+        flex: 1;
+      }
+    }
+  }
+
+  .bottom-btn-area {
+    margin-top: 60rpx;
+    padding: 0 30rpx 40rpx;
+  }
+
+  .submit-btn {
+    width: 100%;
+    height: 90rpx;
+    line-height: 90rpx;
+    background: linear-gradient(90deg, #4080ff 0%, #466dff 100%);
+    border-radius: 45rpx;
+    color: #fff;
+    font-size: 32rpx;
+    font-weight: 500;
+
+    &:active {
+      opacity: 0.9;
+    }
   }
 </style>

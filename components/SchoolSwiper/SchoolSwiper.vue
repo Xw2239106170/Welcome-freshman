@@ -45,12 +45,12 @@
 
 <style lang="scss">
   .swiper-box {
-    margin-top: 20px;
+    // margin-top: 20px;
     width: 100%;
     position: relative;
     height: 500rpx;
     // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: #6cc4cb;
+    // background-color: #6cc4cb;
 
     .box-item {
       margin: 0 auto;

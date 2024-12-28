@@ -41,7 +41,7 @@
     data() {
       return {
         searchValue: '',
-        defaultPic: '/static/defaultmobile.png', // 修正图片路径,
+        defaultPic: '/static/center2/person.png', // 修正图片路径,
         adList: ['https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/e6e3fbd9-74ff-46a0-9e9b-4fd298e7178f.jpg',
           'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/ec470947-28c0-4ea3-9bb6-e4ced4643af8.jpg',
           'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/9ac362f7-e372-4e0c-bb87-980d8abcfec4.jpg',
@@ -76,7 +76,8 @@
     // width: 100%;
     // height: 100vh;
     padding: 10px;
-    background: linear-gradient(to bottom, #6cc4cb, white);
+    // background: linear-gradient(to bottom, #6cc4cb, white);
+    background-color: #efefef;
   }
 
   .page-avatar {

@@ -1,39 +1,52 @@
 <template>
-  <view class="preview-box">
-    <!-- 标题 -->
-    <view class="title">软件工程专业预览</view>
-    <!-- 简介 -->
-    <view class="intro">
-      软件工程是一门研究和应用如何以系统化、规范化、可定量的过程化方法开发和维护软件的学科。
-      学习软件工程需要掌握编程、数据库、系统设计等技能，是信息技术领域的重要学科之一。
+  <view class="container">
+    <!-- 顶部导航 -->
+    <view class="header">
+      <text class="welcome-message">你好，欢迎来到</text>
+      <text class="major-name">{{ majorName }}</text>
     </view>
-    <!-- 课程 -->
-    <view class="course">
-      <view class="course-title">主要课程：</view>
-      <swiper class="course-list" :indicator-dots="false" :autoplay="true" :interval="3000">
-        <swiper-item v-for="(course, index) in courseList" :key="index">
-          <view class="course-item" :style="{ 'background-color': getColor(index) }">{{ course }}</view>
-        </swiper-item>
-      </swiper>
-    </view>
-    <!-- 就业方向 -->
-    <view class="employment">
-      <view class="employment-title">就业方向：</view>
-      <swiper class="employment-list" :indicator-dots="false" :autoplay="true" :interval="3000">
-        <swiper-item v-for="(employment, index) in employmentList" :key="index">
-          <view class="employment-item" :style="{ 'background-color': getColor(index) }">{{ employment }}</view>
-        </swiper-item>
-      </swiper>
-    </view>
-    <!-- 学习网站 -->
-    <view class="study-websites">
-      <view class="study-title">学习网站推荐：</view>
-      <view class="website-list">
-        <view class="website-item" v-for="(website, index) in websiteList" :key="index">
-          <!--    <navigator :url="website.url">{{ website.name }}</navigator> -->
-          <uni-link :href='website.url'>{{website.name}}</uni-link>
+
+    <!-- 课程推荐模块 -->
+
+    <view class="section resources-section" style="margin-bottom: 50rpx; margin-top: 50rpx;">
+      <text class="section-title">课程推荐</text>
+      <view class="resource-grid">
+        <view class="resource-card" v-for="(course, index) in recommendedCourses" :key="index">
+          <image :src="course.image" class="resource-image" mode="aspectFill"></image>
+          <view class="resource-text">
+            <text class="resource-title">{{ course.name }}</text>
+            <navigator :url="resource.url" class="resource-link">查看详情</navigator>
+          </view>
         </view>
       </view>
+    </view>
+
+    <!-- 学习资源模块 -->
+    <view class="section resources-section">
+      <text class="section-title">学习资源</text>
+      <view class="resource-grid">
+        <view class="resource-card" v-for="(resource, index) in learningResources" :key="index">
+          <image :src="resource.image" class="resource-image" mode="aspectFill"></image>
+          <view class="resource-text">
+            <text class="resource-title">{{ resource.title }}</text>
+            <navigator :url="resource.url" class="resource-link">查看详情</navigator>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 每日知识模块 -->
+    <view class="section daily-knowledge-section">
+      <text class="section-title">每日知识</text>
+      <view class="knowledge-card">
+        <text class="knowledge-content">{{ dailyKnowledge }}</text>
+      </view>
+    </view>
+
+    <!-- 底部交互按钮 -->
+    <view class="footer">
+      <button class="footer-button" @tap="goToMyCourses">我的课程</button>
+      <button class="footer-button" @tap="goToMyFavorites">我的收藏</button>
     </view>
   </view>
 </template>
@@ -42,134 +55,194 @@
   export default {
     data() {
       return {
-        courseList: [
-          '软件需求工程',
-          '软件设计与架构',
-          '软件测试与质量保证',
-          '软件项目管理',
-          '人机交互技术'
+        majorName: "软件工程",
+        recommendedCourses: [{
+            id: 1,
+            name: "前端开发技术",
+            image: "https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/ad4dae8b-a6ef-4216-87c4-019301c10521.png"
+          },
+          {
+            id: 2,
+            name: "人工智能基础",
+            image: "https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/4148106d-984b-4a52-b1d6-3b2b495a8e37.jpg"
+          },
+          {
+            id: 3,
+            name: "算法与数据结构",
+            image: "https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/e4a4c4b7-321a-45d4-a769-6c61523e80e2.jpg"
+          },
         ],
-        employmentList: [
-          '软件工程师',
-          '系统架构师',
-          '软件测试工程师',
-          '项目经理',
-          'UI/UX设计师'
+        learningResources: [{
+            image: "https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/7c149a6b-e71b-4b15-9660-7249315e05fb.png",
+            title: "Java 编程实战",
+            url: "/pages/resource-detail?id=1",
+          },
+          {
+            image: "https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/e58cf601-3d3b-4b77-b1fc-04c7cc867374.jpg",
+            title: "机器学习入门",
+            url: "/pages/resource-detail?id=2",
+          },
+          {
+            image: "https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/8872fa2d-ec71-4660-b686-7bee58c648f9.jpg",
+            title: "Python 快速上手",
+            url: "/pages/resource-detail?id=3",
+          },
         ],
-        colors: ['#FFC0CB', '#FFA07A', '#F08080', '#90EE90', '#ADD8E6'],
-        websiteList: [{
-            name: 'GitHub',
-            url: 'https://github.com/'
-          },
-          {
-            name: 'Stack Overflow',
-            url: 'https://stackoverflow.com/'
-          },
-          {
-            name: 'Coursera',
-            url: 'https://www.coursera.org/'
-          },
-          {
-            name: 'edX',
-            url: 'https://www.edx.org/'
-          },
-          {
-            name: 'Udemy',
-            url: 'https://www.udemy.com/'
-          }
-        ]
+        dailyKnowledge: "你知道吗？在计算机领域，第一位程序员是 Ada Lovelace，她是 19 世纪的数学家。",
       };
     },
     methods: {
-      getColor(index) {
-        return this.colors[index % this.colors.length];
-      }
-    }
-  }
+      navigateToCourse(courseId) {
+        uni.navigateTo({
+          url: `/pages/course-detail?id=${courseId}`,
+        });
+      },
+      goToMyCourses() {
+        uni.navigateTo({
+          url: "/pages/my-courses",
+        });
+      },
+      goToMyFavorites() {
+        uni.navigateTo({
+          url: "/pages/my-favorites",
+        });
+      },
+    },
+  };
 </script>
 
-<style lang="scss">
-  .preview-box {
-    padding: 20px;
-    background-color: #f5f5f5;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    background: linear-gradient(to bottom, #6cc4cb, white);
+<style scoped>
+  /* 容器样式 */
+  .container {
+    background-color: #f8fafc;
+    padding: 20rpx;
   }
 
-  .title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 10px;
-  }
-
-  .intro {
-    font-size: 16px;
-    color: #666;
-    margin-bottom: 20px;
-  }
-
-  .course-title,
-  .employment-title,
-  .study-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 10px;
-  }
-
-  .course-list,
-  .employment-list {
-    height: 100px;
-    margin-bottom: 20px;
-  }
-
-  .course-item,
-  .employment-item {
-    font-size: 14px;
+  /* 顶部导航 */
+  .header {
+    text-align: center;
+    padding: 30rpx 0;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
     color: #fff;
-    padding: 5px 10px;
-    border-radius: 5px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.5s ease-in;
+    border-radius: 20rpx;
   }
 
-  .study-websites {
-    margin-bottom: 20px;
+  .welcome-message {
+    font-size: 28rpx;
   }
 
-  .website-list {
+  .major-name {
+    font-size: 36rpx;
+    font-weight: bold;
+    margin-top: 10rpx;
+  }
+
+  /* 模块标题 */
+  .section-title {
+    font-size: 30rpx;
+    font-weight: bold;
+    margin: 20rpx 0;
+    color: #333;
+    margin-bottom: 20rpx;
+  }
+
+  /* 课程推荐 */
+  .courses-section {
+    margin-bottom: 50rpx;
+  }
+
+  .courses-scroll {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    gap: 20rpx;
+  }
+
+  .course-card {
+    width: 300rpx;
+    background-color: #fff;
+    border-radius: 20rpx;
+    box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
+  }
+
+  .course-image {
+    width: 100%;
+    height: 160rpx;
+    border-top-left-radius: 20rpx;
+    border-top-right-radius: 20rpx;
+  }
+
+  .course-name {
+    font-size: 26rpx;
+    margin: 10rpx;
+    color: #333;
+  }
+
+  /* 学习资源 */
+  .resource-grid {
     display: flex;
     flex-wrap: wrap;
+    gap: 20rpx;
   }
 
-  .website-item {
-    margin-right: 10px;
-    margin-bottom: 10px;
+  .resource-card {
+    width: 48%;
+    background-color: #fff;
+    border-radius: 20rpx;
+    box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
   }
 
-  uni-link {
+  .resource-image {
+    width: 100%;
+    height: 140rpx;
+    border-top-left-radius: 20rpx;
+    border-top-right-radius: 20rpx;
+  }
+
+  .resource-text {
+    padding: 10rpx;
+  }
+
+  .resource-title {
+    font-size: 24rpx;
+    font-weight: bold;
     color: #333;
-    text-decoration: none;
-    transition: color 0.3s;
   }
 
-  uni-link:hover {
-    color: #007bff;
+  .resource-link {
+    font-size: 22rpx;
+    color: #4a90e2;
+    margin-top: 5rpx;
+    display: inline-block;
   }
 
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
+  /* 每日知识 */
+  .knowledge-card {
+    background: #ffe082;
+    padding: 20rpx;
+    border-radius: 20rpx;
+    color: #333;
+    font-size: 24rpx;
+    text-align: center;
+    margin-top: 20rpx;
+    box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
+  }
 
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  /* 底部交互按钮 */
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 20rpx 0;
+  }
+
+  .footer-button {
+    flex: 1;
+    margin: 0 10rpx;
+    padding: 20rpx;
+    background: #2575fc;
+    color: #fff;
+    border-radius: 30rpx;
+    text-align: center;
+    font-size: 26rpx;
   }
 </style>

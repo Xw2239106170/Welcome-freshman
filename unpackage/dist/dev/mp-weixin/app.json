@@ -17,14 +17,21 @@
         "detailclub/detailclub",
         "schoolmap/schoolmap",
         "detailmessage/detailmessage",
-        "detailimage/detailimage"
+        "detailimage/detailimage",
+        "detailNews/detailNews",
+        "schoolCalender/schoolCalender",
+        "detailCET/detailCET",
+        "schoolInfo/schoolInfo",
+        "DetailPost/DetailPost",
+        "HotNewsDetail/HotNewsDetail",
+        "collecthonor/collecthonor"
       ]
     }
   ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#6cc4cb",
+    "navigationBarBackgroundColor": "#efefef",
     "backgroundColor": "#a3ede4"
   },
   "tabBar": {
@@ -32,20 +39,20 @@
       {
         "pagePath": "pages/test/test",
         "text": "打卡",
-        "iconPath": "static/center2/rabbit.png",
-        "selectedIconPath": "static/center2/squirrel.png"
+        "iconPath": "static/first/xiaoqudongtai.png",
+        "selectedIconPath": "static/first/xiaoqudongtai.png"
       },
       {
         "pagePath": "pages/home/home",
         "text": "主页",
-        "iconPath": "static/center2/小猪.png",
-        "selectedIconPath": "static/center2/小猪储蓄罐-收入.png"
+        "iconPath": "static/first/zhuye-5.png",
+        "selectedIconPath": "static/first/zhuye-5.png"
       },
       {
         "pagePath": "pages/person/person",
         "text": "个人",
-        "iconPath": "static/center2/dran.png",
-        "selectedIconPath": "static/center2/OTHER.png"
+        "iconPath": "static/first/geren.png",
+        "selectedIconPath": "static/first/geren.png"
       }
     ]
   },

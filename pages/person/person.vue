@@ -1,6 +1,5 @@
 <template>
   <view class="page">
-
     <NewPerson></NewPerson>
   </view>
 </template>

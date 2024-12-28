@@ -24,114 +24,185 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.page-box {
-  background-color: #efefef;
-  padding: 20rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: linear-gradient(to bottom, #6cc4cb, white);
+page {
+  background-color: #f5f6fa;
 }
-.page-box .pay-sum {
-  display: flex;
-  margin-top: 20rpx;
-  width: 100%;
-  height: 120rpx;
-  background-color: #efefef;
-  border-radius: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: fixed;
-  bottom: 20rpx;
+.container {
+  min-height: 100vh;
+  position: relative;
+}
+.header-bg {
+  position: absolute;
+  top: 0;
   left: 0;
+  right: 0;
+  height: 400rpx;
+  background: linear-gradient(180deg, #4080ff 0%, #466dff 100%);
+  border-radius: 0 0 50rpx 50rpx;
 }
-.page-box .pay-sum .sum-left {
-  height: 100%;
-  width: 30%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.content {
+  position: relative;
+  z-index: 1;
+  padding: 40rpx 30rpx;
 }
-.page-box .pay-sum .sum-right {
-  height: 100%;
-  width: 70%;
-  display: flex;
-  align-content: center;
-  justify-content: space-around;
-}
-.page-box .pay-sum .sum-right button {
-  margin-top: 10rpx;
-  height: 100rpx;
-  width: 200rpx;
-  line-height: 100rpx;
-}
-.info {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20rpx;
-}
-.student-info {
-  width: 50%;
-  height: 200rpx;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 20rpx;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-.avatar image {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-}
-.tab-nav {
-  display: flex;
-  margin-bottom: 10rpx;
-}
-.tab-nav text {
-  padding: 10rpx 20rpx;
-  margin-right: 10rpx;
-  background-color: #fff;
-  border-radius: 10px;
-  color: #333;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-.tab-nav .active {
-  background-color: #333;
+.page-header {
+  padding: 40rpx 0;
+  text-align: center;
   color: #fff;
 }
-.tab-nav text:hover {
-  background-color: #ccc;
+.page-header .page-title {
+  font-size: 48rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 16rpx;
 }
-.tab-content {
-  padding: 20rpx;
+.page-header .page-desc {
+  font-size: 28rpx;
+  opacity: 0.9;
+}
+.form-box {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 40rpx 30rpx;
+  margin-top: 40rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+.form-item {
+  margin-bottom: 40rpx;
+}
+.form-item .form-label {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 16rpx;
+  display: block;
+  font-weight: 500;
+}
+.form-input {
   width: 100%;
-  background-color: #fff;
+  height: 90rpx;
+  background: #f8f9fc;
+  border-radius: 12rpx;
+  padding: 0 30rpx;
+  font-size: 30rpx;
+  color: #333;
+}
+.picker-box .picker-value {
+  height: 90rpx;
+  background: #f8f9fc;
+  border-radius: 12rpx;
+  padding: 0 30rpx;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.picker-box .picker-value .selected-text {
+  font-size: 30rpx;
+  color: #333;
+}
+.picker-box .picker-value .placeholder-text {
+  font-size: 30rpx;
+  color: #999;
+}
+.picker-box .picker-value .picker-arrow {
+  color: #999;
+  font-family: "宋体";
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+}
+.amount-section {
+  margin: 50rpx 0;
+  text-align: center;
+}
+.amount-section .amount-title {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 20rpx;
+}
+.amount-section .amount-value .amount-symbol {
+  font-size: 40rpx;
+  color: #333;
+  margin-right: 8rpx;
+}
+.amount-section .amount-value .amount-number {
+  font-size: 60rpx;
+  color: #333;
+  font-weight: bold;
+}
+.payment-section {
+  margin-bottom: 50rpx;
+}
+.payment-section .section-title {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 30rpx;
+  display: block;
+  font-weight: 500;
+}
+.payment-section .payment-options {
+  display: flex;
+  justify-content: space-between;
+}
+.payment-section .payment-item {
+  flex: 1;
+  height: 140rpx;
+  background: #f8f9fc;
+  margin: 0 10rpx;
+  border-radius: 12rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-/* 空空如也 */
-.empty-cart {
+.payment-section .payment-item-active {
+  background: #edf3ff;
+  border: 2rpx solid #4080ff;
+}
+.payment-section .payment-item .payment-icon {
+  width: 60rpx;
+  height: 60rpx;
+  margin-bottom: 12rpx;
+}
+.payment-section .payment-item .payment-name {
+  font-size: 24rpx;
+  color: #666;
+}
+.notice-box {
+  background: #f8f9fc;
+  padding: 30rpx;
+  border-radius: 12rpx;
+}
+.notice-box .notice-item {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 150px;
+  align-items: flex-start;
+  margin-bottom: 16rpx;
 }
-.empty-cart .empty-img {
-  width: 90px;
-  height: 90px;
+.notice-box .notice-item:last-child {
+  margin-bottom: 0;
 }
-.empty-cart .tip-text {
-  font-size: 12px;
-  color: gray;
-  margin-top: 15px;
+.notice-box .notice-item .dot {
+  color: #666;
+  margin-right: 12rpx;
+}
+.notice-box .notice-item .notice-text {
+  font-size: 24rpx;
+  color: #666;
+  flex: 1;
+}
+.bottom-btn-area {
+  margin-top: 60rpx;
+  padding: 0 30rpx 40rpx;
+}
+.submit-btn {
+  width: 100%;
+  height: 90rpx;
+  line-height: 90rpx;
+  background: linear-gradient(90deg, #4080ff 0%, #466dff 100%);
+  border-radius: 45rpx;
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: 500;
+}
+.submit-btn:active {
+  opacity: 0.9;
 }
 

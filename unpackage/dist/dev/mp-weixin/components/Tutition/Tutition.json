@@ -1,6 +1,4 @@
 {
-  "usingComponents": {
-    "payment": "/components/Payment/Payment"
-  },
+  "usingComponents": {},
   "component": true
 }

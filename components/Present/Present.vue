@@ -1,235 +1,347 @@
+# pages/checkin-rank/index.vue
 <template>
-  <view class="gift-page">
-    <view class="title">
-      <text>领取新生礼包</text>
-      <image src="../../static/present/gift.png" class="gift-icon"></image>
-    </view>
-    <view class="form">
-      <view class="form-item">
-        <image src="/static/present/yuanlingTxu.png" class="gift-item-icon"></image>
-        <text class="label">文化衫尺码：</text>
-        <!--        <input class="input" v-model="shirtSize" type="text" placeholder="请输入尺码" /> -->
-        <uni-data-select v-model="shirtSize" :localdata="range" class="input"></uni-data-select>
-      </view>
-      <view class="form-item">
-        <image src="../../static/present/kuzi.png" class="gift-item-icon"></image>
-        <text class="label">裤子尺码：</text>
-        <uni-data-select v-model="pantsSize" :localdata="range" class="input"></uni-data-select>
-
-      </view>
-      <view class="form-item">
-        <image src="../../static/present/shubao.png" class="gift-item-icon"></image>
-        <text class="label">书包：</text>
-        <text class="info">已包含</text>
-      </view>
-      <view class="form-item">
-        <image src="../../static/present/maozi.png" class="gift-item-icon"></image>
-        <text class="label">帽子：</text>
-        <text class="info">已包含</text>
-      </view>
-      <view class="form-item">
-        <image src="https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/1a9a45bb-db84-41dc-847c-4558d20e1835.png"
-          class="gift-item-icon"></image>
-        <text class="label">三件套：</text>
-        <text class="info">已包含</text>
-      </view>
-      <view class="submit-button" @click="submitForm">领取礼包</view>
-    </view>
-    <uni-popup title="礼包内容" ref="popup" type="dialog">
-      <uni-popup-dialog mode="base" :duration="2000" :before-close="true" @confirm="confirm" showClose="false"
-        @close="close" type="info">
-        <view class="popup-content">
-          <h1 style="font-size: 24px; margin-bottom: 20rpx; font-weight: bold; color: #9e8655;">领取礼品包括</h1>
-          <text class="popup-text">文化衫尺码：{{ shirtSize }}</text>
-          <text class="popup-text">裤子尺码：{{ pantsSize }}</text>
-          <text class="popup-text">书包：已包含</text>
-          <text class="popup-text">帽子：已包含</text>
-          <text class="popup-text">三件套：已包含</text>
-          <text class="popup-text" style="color: #9e8655;">地点：学校一食堂门口</text>
-
+  <view class="container">
+    <!-- 我的打卡状态 -->
+    <view class="my-status">
+      <view class="status-card">
+        <view class="user-info">
+          <image class="avatar" :src="UserAvatar" mode="aspectFill"></image>
+          <view class="info-right">
+            <text class="nickname">{{userInfo.nickname}}</text>
+            <text class="college">{{userInfo.college}}</text>
+          </view>
         </view>
-      </uni-popup-dialog>
-    </uni-popup>
+        <view class="status-grid">
+          <view class="status-item">
+            <text class="num">{{userInfo.checkInCount}}</text>
+            <text class="label">已打卡</text>
+          </view>
+          <view class="status-item">
+            <text class="num">{{userInfo.ranking}}</text>
+            <text class="label">当前排名</text>
+          </view>
+          <view class="status-item">
+            <text class="num">{{userInfo.continuous}}天</text>
+            <text class="label">连续打卡</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 排行榜分类切换 -->
+    <view class="rank-tabs">
+      <view class="tab-item" v-for="(tab, index) in tabs" :key="index" :class="{ active: currentTab === index }"
+        @tap="switchTab(index)">
+        {{tab.name}}
+      </view>
+    </view>
+
+    <!-- 排行榜列表 -->
+    <scroll-view class="rank-list" scroll-y @scrolltolower="loadMore">
+      <view class="rank-item" v-for="(item, index) in rankList" :key="item.id" :class="{ 'top3': index < 3 }">
+        <!-- 排名 -->
+        <view class="rank-num" :class="'rank-' + (index + 1)">
+          <view v-if="index < 3" class="iconfont icon-crown">
+            <image :src="rank[index].icon" mode="" style="height: 70rpx;
+width: 70rpx;"></image>
+          </view>
+          <text v-else>{{index + 1}}</text>
+        </view>
+
+        <!-- 用户信息 -->
+        <image class="user-avatar" :src="item.avatar" mode="aspectFill"></image>
+        <view class="user-detail">
+          <text class="user-name">{{item.nickname}}</text>
+          <text class="user-desc">{{item.college}}</text>
+        </view>
+
+        <!-- 打卡数据 -->
+        <view class="check-info">
+          <text class="check-num">{{item.checkInCount}}次</text>
+          <text class="check-label">已打卡</text>
+        </view>
+      </view>
+
+      <!-- 加载更多 -->
+      <view class="loading" v-if="isLoading">
+        <text class="loading-text">加载中...</text>
+      </view>
+    </scroll-view>
   </view>
 </template>
 
 <script>
   import {
     mapState,
-    mapMutations
-  } from 'vuex';
+    mapMutations,
+    mapActions
+  } from 'vuex'
+  import {
+    ranks,
+    rankModel
+  } from '../../utils/mock.js'
   export default {
     computed: {
-      ...mapState('user', ['giftNum'])
+      ...mapState('user', ['UserAvatar']),
     },
     data() {
       return {
-        candidates: ['XS', 'S', 'M', 'L', 'XL', '2XL'],
-        range: [{
-          value: 'XS',
-          text: 'XS'
-        }, {
-          value: 'S',
-          text: 'S'
-        }, {
-          value: 'M',
-          text: 'M'
-        }, {
-          value: 'L',
-          text: 'L'
-        }, {
-          value: 'XL',
-          text: 'XL'
-        }, {
-          value: '2XL',
-          text: '2XL'
-        }],
-        shirtSize: '',
-        pantsSize: '',
-        showPopup: false
-      };
+        rank: [],
+        userInfo: {
+          avatar: '',
+          nickname: '小徐同学',
+          college: '软件工程',
+          checkInCount: 12,
+          ranking: 1,
+          continuous: 5
+        },
+        tabs: [{
+            name: '总榜',
+            type: 'all'
+          },
+          {
+            name: '学院榜',
+            type: 'college'
+          },
+          {
+            name: '连续打卡榜',
+            type: 'continuous'
+          }
+        ],
+        currentTab: 0,
+        rankList: [],
+        page: 1,
+        isLoading: false
+      }
+    },
+    onLoad() {
+      this.loadRankData()
+      this.rankList = [...ranks]
+    },
+    onReady() {
+      this.rankList = [...ranks]
+      this.rank = rankModel
+      ranks[0].avatar = this.UserAvatar
+      console.log(rankModel)
     },
     methods: {
-      ...mapMutations('user', ['changeGiftNum']),
-      submitForm() {
-        if (!this.confirmSize()) {
-          return
-        }
-        console.log(this.confirmSize())
-        if (this.giftNum === 0) {
-          this.$refs.popup.open()
-          // 提交表单逻辑，这里假设提交成功
-          // 显示弹窗
-          this.showPopup = true;
+      // 切换排行榜类型
+      switchTab(index) {
+        if (this.currentTab === index) return
+        this.currentTab = index
+        this.page = 1
+        this.rankList = [...ranks]
+        // this.loadRankData()
+      },
 
-          // 更新领取状态
-          this.changeGiftNum()
+      // 加载排行榜数据
+      async loadRankData() {
+        if (this.isLoading) return
+        this.isLoading = true
 
-          // 提示用户
-          uni.showToast({
-            title: '领取成功',
-            icon: 'success'
-          });
-          return
-        }
-        // 已经领取过
-        uni.showToast({
-          title: '不可重复领取哦~',
-          icon: 'error'
-        });
+        // 模拟数据，实际项目中应该调用API
+        const mockData = Array(10).fill(0).map((_, i) => ({
+          id: this.page * 100 + i,
+          avatar: '',
+          nickname: `用户${this.page * 10 + i}`,
+          college: '计算机科学与技术',
+          checkInCount: 100 - (this.page * 10 + i),
+          continuous: 20 - (this.page * 10 + i)
+        }))
+
+        setTimeout(() => {
+          this.rankList = [...this.rankList, ...mockData]
+          this.isLoading = false
+        }, 500)
       },
-      // 下面是对提示框的处理
-      confirm(value) {
-        this.$refs.popup.close()
-      },
-      close() {
-        this.$refs.popup.close()
-      },
-      confirmSize() {
-        if (this.shirtSize === '') {
-          uni.$showMsg('请填写衣服尺码~')
-          return false
-        }
-        if (this.pantsSize === '') {
-          uni.$showMsg('请填写裤子尺码~')
-          return false
-        }
-        return true
+
+      // 加载更多
+      loadMore() {
+        this.page++
+        this.loadRankData()
       }
     }
-  };
+  }
 </script>
 
 <style lang="scss">
-  .gift-page {
-    padding: 20px;
-    background-color: #f9f9f9;
+  .container {
+    min-height: 100vh;
+    background-color: #f5f7fa;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .my-status {
+    padding: 30rpx;
+
+    .status-card {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border-radius: 24rpx;
+      padding: 30rpx;
+      color: #fff;
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 30rpx;
+
+        .avatar {
+          width: 100rpx;
+          height: 100rpx;
+          border-radius: 50%;
+          border: 4rpx solid rgba(255, 255, 255, 0.3);
+        }
+
+        .info-right {
+          margin-left: 20rpx;
+
+          .nickname {
+            font-size: 32rpx;
+            font-weight: 500;
+          }
+
+          .college {
+            font-size: 24rpx;
+            opacity: 0.8;
+            margin-top: 4rpx;
+          }
+        }
+      }
+
+      .status-grid {
+        display: flex;
+        justify-content: space-around;
+        text-align: center;
+
+        .status-item {
+          .num {
+            font-size: 40rpx;
+            font-weight: bold;
+            display: block;
+          }
+
+          .label {
+            font-size: 24rpx;
+            opacity: 0.8;
+            margin-top: 8rpx;
+          }
+        }
+      }
+    }
+  }
+
+  .rank-tabs {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
-    background: linear-gradient(to bottom, #6cc4cb, white);
+    padding: 0 30rpx;
+    margin-bottom: 20rpx;
+
+    .tab-item {
+      padding: 16rpx 40rpx;
+      font-size: 28rpx;
+      color: #666;
+      background: #fff;
+      border-radius: 100rpx;
+      margin-right: 20rpx;
+
+      &.active {
+        background: #6366f1;
+        color: #fff;
+      }
+    }
   }
 
-  .title {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-    display: flex;
-    align-items: center;
+  .rank-list {
+    height: calc(100vh - 400rpx);
+
+    .rank-item {
+      margin: 20rpx 30rpx;
+      padding: 30rpx;
+      background: #fff;
+      border-radius: 16rpx;
+      display: flex;
+      align-items: center;
+
+      &.top3 {
+        background: linear-gradient(to right, #fff5f5, #fff);
+
+        .rank-num {
+          color: #f43f5e;
+        }
+      }
+
+      .rank-num {
+        width: 60rpx;
+        font-size: 32rpx;
+        font-weight: bold;
+        color: #666;
+        margin-right: 30rpx;
+
+        .icon-crown {
+          font-size: 40rpx;
+        }
+
+        &.rank-1 {
+          color: #f59e0b;
+        }
+
+        &.rank-2 {
+          color: #94a3b8;
+        }
+
+        &.rank-3 {
+          color: #d97706;
+        }
+      }
+
+      .user-avatar {
+        width: 80rpx;
+        height: 80rpx;
+        border-radius: 50%;
+        margin-right: 20rpx;
+        border: 1px solid #efefef;
+      }
+
+      .user-detail {
+        flex: 1;
+
+        .user-name {
+          font-size: 28rpx;
+          color: #333;
+          font-weight: 500;
+        }
+
+        .user-desc {
+          font-size: 24rpx;
+          color: #666;
+          margin-top: 4rpx;
+        }
+      }
+
+      .check-info {
+        text-align: right;
+
+        .check-num {
+          font-size: 32rpx;
+          color: #6366f1;
+          font-weight: bold;
+        }
+
+        .check-label {
+          font-size: 24rpx;
+          color: #666;
+          margin-top: 4rpx;
+        }
+      }
+    }
   }
 
-  .gift-icon {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-  }
-
-  .form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    width: 80%;
-    max-width: 400px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .form-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-
-  .label {
-    font-weight: bold;
-    margin-right: 10px;
-  }
-
-  .input {
-    flex: 1;
-    padding: 10px;
-    // border: 1px solid #ccc;
-    border-radius: 5px;
-    // font-size: 12px;
-  }
-
-  .info {
-    color: #888;
-  }
-
-  .submit-button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
+  .loading {
     text-align: center;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-  }
+    padding: 30rpx;
 
-  .uni-popup {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    width: 80%;
-    max-width: 400px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .popup-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .popup-text {
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-
-  .gift-item-icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
+    .loading-text {
+      font-size: 24rpx;
+      color: #999;
+    }
   }
 </style>

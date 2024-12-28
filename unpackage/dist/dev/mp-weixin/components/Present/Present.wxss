@@ -24,81 +24,150 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.gift-page {
-  padding: 20px;
-  background-color: #f9f9f9;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100vh;
-  background: linear-gradient(to bottom, #6cc4cb, white);
+.container {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  padding-bottom: env(safe-area-inset-bottom);
 }
-.title {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #333;
-  display: flex;
-  align-items: center;
+.my-status {
+  padding: 30rpx;
 }
-.gift-icon {
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
-}
-.form {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  width: 80%;
-  max-width: 400px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.form-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
-.label {
-  font-weight: bold;
-  margin-right: 10px;
-}
-.input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 5px;
-}
-.info {
-  color: #888;
-}
-.submit-button {
-  background-color: #007bff;
+.my-status .status-card {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 24rpx;
+  padding: 30rpx;
   color: #fff;
-  padding: 10px 20px;
-  text-align: center;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
 }
-.uni-popup {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  width: 80%;
-  max-width: 400px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.popup-content {
+.my-status .status-card .user-info {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+.my-status .status-card .user-info .avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  border: 4rpx solid rgba(255, 255, 255, 0.3);
+}
+.my-status .status-card .user-info .info-right {
+  margin-left: 20rpx;
+}
+.my-status .status-card .user-info .info-right .nickname {
+  font-size: 32rpx;
+  font-weight: 500;
+}
+.my-status .status-card .user-info .info-right .college {
+  font-size: 24rpx;
+  opacity: 0.8;
+  margin-top: 4rpx;
+}
+.my-status .status-card .status-grid {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+.my-status .status-card .status-grid .status-item .num {
+  font-size: 40rpx;
+  font-weight: bold;
+  display: block;
+}
+.my-status .status-card .status-grid .status-item .label {
+  font-size: 24rpx;
+  opacity: 0.8;
+  margin-top: 8rpx;
+}
+.rank-tabs {
+  display: flex;
+  padding: 0 30rpx;
+  margin-bottom: 20rpx;
+}
+.rank-tabs .tab-item {
+  padding: 16rpx 40rpx;
+  font-size: 28rpx;
+  color: #666;
+  background: #fff;
+  border-radius: 100rpx;
+  margin-right: 20rpx;
+}
+.rank-tabs .tab-item.active {
+  background: #6366f1;
+  color: #fff;
+}
+.rank-list {
+  height: calc(100vh - 400rpx);
+}
+.rank-list .rank-item {
+  margin: 20rpx 30rpx;
+  padding: 30rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  display: flex;
   align-items: center;
 }
-.popup-text {
-  font-size: 16px;
-  margin-bottom: 10px;
+.rank-list .rank-item.top3 {
+  background: linear-gradient(to right, #fff5f5, #fff);
 }
-.gift-item-icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
+.rank-list .rank-item.top3 .rank-num {
+  color: #f43f5e;
+}
+.rank-list .rank-item .rank-num {
+  width: 60rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #666;
+  margin-right: 30rpx;
+}
+.rank-list .rank-item .rank-num .icon-crown {
+  font-size: 40rpx;
+}
+.rank-list .rank-item .rank-num.rank-1 {
+  color: #f59e0b;
+}
+.rank-list .rank-item .rank-num.rank-2 {
+  color: #94a3b8;
+}
+.rank-list .rank-item .rank-num.rank-3 {
+  color: #d97706;
+}
+.rank-list .rank-item .user-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+  border: 1px solid #efefef;
+}
+.rank-list .rank-item .user-detail {
+  flex: 1;
+}
+.rank-list .rank-item .user-detail .user-name {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+.rank-list .rank-item .user-detail .user-desc {
+  font-size: 24rpx;
+  color: #666;
+  margin-top: 4rpx;
+}
+.rank-list .rank-item .check-info {
+  text-align: right;
+}
+.rank-list .rank-item .check-info .check-num {
+  font-size: 32rpx;
+  color: #6366f1;
+  font-weight: bold;
+}
+.rank-list .rank-item .check-info .check-label {
+  font-size: 24rpx;
+  color: #666;
+  margin-top: 4rpx;
+}
+.loading {
+  text-align: center;
+  padding: 30rpx;
+}
+.loading .loading-text {
+  font-size: 24rpx;
+  color: #999;
 }
 

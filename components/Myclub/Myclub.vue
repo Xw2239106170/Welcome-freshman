@@ -17,9 +17,9 @@
       return {
         clubs: [{
             id: 0,
-            name: '篮球社',
-            logoUrl: 'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/854f2fa8-d29c-4ea6-83d0-840748759ad0.png',
-            description: '欢迎加入我们的篮球社，一起打球、交流！',
+            name: '摄影社',
+            logoUrl: 'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/0a3d1d6c-b1b2-4cc1-958c-cbfe9668820b.png',
+            description: '欢迎加入我们的摄影社，一起拍照、交流！',
           },
           {
             id: 1,

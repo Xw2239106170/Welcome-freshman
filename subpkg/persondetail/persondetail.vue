@@ -15,6 +15,7 @@
     <MyInfo v-if="indicate === '7'"></MyInfo>
     <WelcomeDot v-if="indicate === '8'"></WelcomeDot>
     <MyForecast v-if="indicate == '9'"></MyForecast>
+    <!-- <SchoolCard v-if="indicate == '9'"></SchoolCard> -->
     <MySetting v-if="indicate === '10'"></MySetting>
 
   </view>

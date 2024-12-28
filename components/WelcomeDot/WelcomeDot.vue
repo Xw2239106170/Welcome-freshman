@@ -1,204 +1,356 @@
 <template>
-  <view class="welcome-page">
-    <view class="welcome-speed" v-for="(item, index) in transport" :key="index">
-      <view class="item-title">
-        <view class="title-name">
-          {{item.title}}
-        </view>
-        <view class="train">
-          <image :src="item.img" mode=""></image>
-        </view>
+  <view class="ai-chat-window">
+    <!-- 聊天头部 -->
+    <view class="chat-header">
+      <view class="header-left">
+        <image src="https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/405b0c2c-a1de-4272-9b14-cf7cf4a69e5a.png"
+          class="ai-icon"></image>
+        <text class="header-title">Ai 张张</text>
       </view>
-      <view class="item-detail">
-        <map name="map-name" style="height: 100%;width: 100%;" :latitude="item.latitude" :longitude="item.longitude"
-          scale="16.8" enable-3D='true' enable-traffic='true' enable-overlooking='true' show-location="true"
-          enable-rotate='true' :markers="item.marker"></map>
+    </view>
+
+    <!-- 消息区域 -->
+    <scroll-view class="messages-container" scroll-y :scroll-into-view="scrollToView" enable-back-to-top>
+      <view class="message-list">
+        <block v-for="(msg, index) in messages" :key="index" style=" overflow-y: scroll;">
+          <view :class="[
+							'message-item', 
+							msg.sender === 'user' ? 'user-message' : 'ai-message'
+						]">
+            <!-- 头像 -->
+            <view class="message-avatar">
+              <image
+                :src="msg.sender === 'user' ? UserAvatar : 'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/872b3a71-181f-458a-9bef-7ca7a2457d1f.png'"
+                class="avatar-icon">
+              </image>
+            </view>
+
+            <!-- 消息内容 -->
+            <view :class="[
+								'message-content', 
+								msg.sender === 'user' ? 'user-content' : 'ai-content'
+							]">
+              <text user-select="text">{{ msg.text }}</text>
+
+              <!-- 消息状态 -->
+              <view class="message-status" v-if="msg.status">
+                <!-- 发送中状态 -->
+                <image v-if="msg.status === 'sending'"
+                  src="https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/99b593db-559d-44a6-9e5c-2ece2814b601.gif"
+                  class="status-icon"></image>
+
+                <!-- 发送失败状态 -->
+                <image v-if="msg.status === 'error'" src="/static/retry.png" class="status-icon"
+                  @click="retryMessage(msg)"></image>
+              </view>
+            </view>
+          </view>
+        </block>
+        <view id="scrollBottom"></view>
+      </view>
+    </scroll-view>
+
+    <!-- 输入区域 -->
+    <view class="input-container">
+      <!-- 文本输入框 -->
+      <textarea class="message-input" v-model="inputMessage" placeholder="输入消息..." @input="adjustInputHeight"
+        :style="{ height: inputHeight + 'px' }" confirm-type="send" @confirm="sendMessage"></textarea>
+
+      <!-- 发送按钮 -->
+      <view class="send-button" :class="{'send-disabled': !inputMessage.trim() || isLoading}" @click="sendMessage">
+        <image src="https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/1057621f-90ba-4fc2-b69a-83cd1cbfb992.png"
+          class="send-icon"></image>
       </view>
     </view>
   </view>
 </template>
 
 <script>
-  const imgs = '../../static/location.png';
+  import {
+    mapState
+  } from 'vuex';
   export default {
-    name: "WelcomeDot",
+    computed: {
+      ...mapState('user', ['UserAvatar'])
+    },
     data() {
       return {
-        transport: [{
-          title: "张家界高铁西站",
-          img: "https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/299ae8ca-0997-47e8-a5d7-f28b8b1ffbb2.png",
-          latitude: 29.167140567826547,
-          longitude: 110.46261105063165,
-          marker: [{
-            id: 1,
-            latitude: 29.167140567826547,
-            longitude: 110.46261105063165,
-            iconPath: imgs,
-            width: 20,
-            height: 20,
-            joinCluster: true, // 指定了该参数才会参与聚合
-            label: {
-              width: 50,
-              height: 30,
-              borderWidth: 1,
-              borderRadius: 10,
-              bgColor: '#ffffff',
-              content: `迎新位置`
-            }
-          }]
-        }, {
-          title: "张家界站",
-          img: 'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/f82ccf78-126e-4f8a-9917-8d541846e24b.png',
-          latitude: 29.104948761480074,
-          longitude: 110.4865271994179,
-          marker: [{
-            id: 1,
-            latitude: 29.104948761480074,
-            longitude: 110.4865271994179,
-            iconPath: imgs,
-            width: 20,
-            height: 20,
-            joinCluster: true, // 指定了该参数才会参与聚合
-            label: {
-              width: 50,
-              height: 30,
-              borderWidth: 1,
-              borderRadius: 10,
-              bgColor: '#ffffff',
-              content: `迎新位置`
-            }
-          }]
-
-        }, {
-          title: "张家界荷花国际机场",
-          img: 'https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/f0ba31b3-8433-4faa-89e5-23debd7e04df.png',
-          latitude: 29.10536133148906,
-          longitude: 110.44454653675673,
-          marker: [{
-            id: 1,
-            latitude: 29.10536133148906,
-            longitude: 110.44454653675673,
-            iconPath: imgs,
-            width: 20,
-            height: 20,
-            joinCluster: true, // 指定了该参数才会参与聚合
-            label: {
-              width: 50,
-              height: 30,
-              borderWidth: 1,
-              borderRadius: 10,
-              bgColor: '#ffffff',
-              content: `迎新位置`
-            }
-          }]
-
-        }]
-      };
+        messages: [{
+          id: 1,
+          text: '你好！我是小助手张张，有什么可以帮你的吗？',
+          sender: 'ai',
+          timestamp: Date.now(),
+          type: 'text'
+        }],
+        inputMessage: '',
+        isLoading: false,
+        isSpeechEnabled: false,
+        scrollToView: '',
+        inputHeight: 40 // 默认输入框高度
+      }
     },
-    mounted() {
-      const key = 'YQWBZ-WFZH5-LEGIS-IYODB-LFF27-BQBB4';
-      const start = '29.1675,110.4656'; // 例如：'28.1871,112.9836'
-      const end = '29.1485,110.4576'; // 例如：'28.1973,113.0333'
-      uni.request({
-        url: 'https://apis.map.qq.com/ws/direction/v1/transit',
-        data: {
-          key: key,
-          from: start,
-          to: end
-        },
-        success: (res) => {
-          console.log(res)
-          if (res.data.status === 0 && res.data.result.routes.length > 0) {
-            const route = res.data.result.routes[0];
-            const polyline = [];
-
-            route.steps.forEach((step) => {
-              if (step.mode === 'TRANSIT') {
-                // 步行路线
-                step.polyline.forEach((pointStr) => {
-                  // const point = pointStr.split(',');
-                  polyline.push({
-                    latitude: parseFloat(point[1]),
-                    longitude: parseFloat(point[0])
-                  });
-                });
-              } else if (step.mode === 'WALKING') {
-                // 公交路线
-                step.lines.forEach((line) => {
-                  line.polyline.forEach((pointStr) => {
-                    // const point = pointStr.split(',');
-                    polyline.push({
-                      latitude: parseFloat(point[1]),
-                      longitude: parseFloat(point[0])
-                    });
-                  });
-                });
-              }
-            });
-
-            this.polyline = [{
-              points: polyline,
-              color: '#0000FF',
-              width: 2,
-              dottedLine: false
-            }];
-          }
-        },
-        fail: (err) => {
-          console.error(err);
+    methods: {
+      // 发送消息
+      sendMessage() {
+        // 检查消息是否为空
+        if (!this.inputMessage.trim()) {
+          uni.showToast({
+            title: '消息不能为空',
+            icon: 'none'
+          })
+          return
         }
-      });
-    }
 
+        // 添加用户消息
+        const userMessage = {
+          id: this.messages.length + 1,
+          text: this.inputMessage,
+          sender: 'user',
+          timestamp: Date.now(),
+          status: 'sending',
+          type: 'text'
+        }
+        this.messages.push(userMessage)
+
+        // 重置输入框
+        const originalMessage = this.inputMessage
+        this.inputMessage = ''
+        this.inputHeight = 40 // 重置输入框高度
+        this.isLoading = true
+
+        // 模拟AI响应
+        this.simulateAIResponse(originalMessage)
+      },
+
+      // 模拟AI响应
+      async simulateAIResponse(userMessage) {
+        const res = await uni.$http.get('/ai', {
+          sentence: userMessage
+        })
+        const aiMessage = {
+          id: this.messages.length + 1,
+          text: res.data.data,
+          sender: 'ai',
+          timestamp: Date.now(),
+          type: 'text'
+        }
+
+        this.messages.push(aiMessage)
+        this.isLoading = false
+        this.scrollToBottom()
+
+        // 语音朗读
+        if (this.isSpeechEnabled) {
+          this.speakText(aiMessage.text)
+        }
+      },
+
+      // 重试发送失败的消息
+      retryMessage(message) {
+        if (message.status === 'error') {
+          this.sendMessage()
+        }
+      },
+
+      // 滚动到底部
+      scrollToBottom() {
+        this.scrollToView = 'scrollBottom'
+      },
+
+      // 调整输入框高度
+      adjustInputHeight(e) {
+        // 动态调整输入框高度，最大高度为100px
+        uni.createSelectorQuery().select('.message-input')
+          .fields({
+            scrollHeight: true
+          }, (res) => {
+            // this.inputHeight = Math.min(res.scrollHeight, 100)
+          }).exec()
+      },
+
+      // 语音朗读功能
+      speakText(text) {
+        // uni-app 使用 plus.speech 进行语音朗读
+        // 注意：需要在manifest.json中配置语音权限
+        // #ifdef APP-PLUS
+        if (plus.speech) {
+          plus.speech.startSpeak({
+            text: text,
+            lang: 'zh-CN'
+          })
+        }
+        // #endif
+      },
+
+      // 切换语音开关
+      toggleVoice() {
+        this.isSpeechEnabled = !this.isSpeechEnabled
+
+        // 提示用户语音状态
+        uni.showToast({
+          title: this.isSpeechEnabled ? '语音已开启' : '语音已关闭',
+          icon: 'none'
+        })
+      }
+    }
   }
 </script>
 
-<style lang="scss">
-  .welcome-page {
-    width: 100%;
+<style scoped>
+  .ai-chat-window {
+    display: flex;
+    flex-direction: column;
     height: 100vh;
-    background-color: #efefef;
-    padding: 10rpx;
+    background-color: #f5f5f5;
+  }
 
-    .welcome-speed {
-      border-radius: 10px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      height: 300px;
-      margin-bottom: 50px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      align-items: center;
-      background-color: #fff;
+  .chat-header {
+    background: linear-gradient(to right, #4a90e2, #8e44ad);
+    /* 左到右的渐变颜色 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #007AFF;
+    color: white;
+  }
 
-      .item-detail {
-        width: 100%;
-        height: 250px;
-        // background-color: pink;
-      }
+  .header-left {
+    display: flex;
+    align-items: center;
+  }
 
-      // https://zhihuiyingxin.oss-cn-hangzhou.aliyuncs.com/cd38bbbc-32eb-4ba7-b603-8dd336b94f94.jpg
-      .item-title {
-        line-height: 50px;
-        width: 100%;
-        height: 50px;
-        font-size: 25px;
-        font-weight: bold;
-        display: flex;
+  .ai-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
 
-        .train {
-          margin-top: 4px;
-          margin-left: 5px;
-          height: 30px;
-          width: 30px;
+  .header-title {
+    font-weight: bold;
+    font-size: 18px;
+  }
 
-          image {
-            width: 100%;
-            height: 100%;
-          }
-        }
-      }
-    }
+  .voice-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .messages-container {
+    flex-grow: 1;
+    padding: 15px 0;
+    background-color: white;
+
+  }
+
+  .message-list {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 150rpx;
+  }
+
+  .message-item {
+    display: flex;
+    margin-bottom: 15px;
+    align-items: flex-start;
+  }
+
+  .message-avatar {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+
+  .avatar-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+  }
+
+  .message-content {
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 10px;
+    position: relative;
+  }
+
+  .user-message {
+    flex-direction: row-reverse;
+  }
+
+  .user-content {
+    background-color: #007AFF;
+    color: white;
+    margin-left: 10px;
+  }
+
+  .ai-content {
+    background-color: #f0f0f0;
+    color: black;
+    margin-right: 10px;
+  }
+
+  .message-status {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+  }
+
+  .status-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .input-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: 10px;
+    background-color: white;
+    border-top-width: 1px;
+    border-top-color: #e0e0e0;
+  }
+
+  .attach-button {
+    margin-right: 10px;
+  }
+
+  .attach-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .message-input {
+    flex-grow: 1;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    padding: 10px;
+    min-height: 40px;
+    max-height: 80px;
+    margin-right: 10px;
+    width: 550rpx;
+    /*    box-sizing: border-box;
+    overflow: hidden; */
+  }
+
+  .send-button {
+    background-color: #007AFF;
+    border-radius: 25px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .send-icon,
+  .loading-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .send-disabled {
+    opacity: 0.5;
   }
 </style>
